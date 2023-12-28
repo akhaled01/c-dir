@@ -1,11 +1,7 @@
 package funcs
 
-import (
-	"io/fs"
-)
+// TODO: get Long Format Display Done
 
-// TODO: get Long Format Display Done 
-
-func LFD(info fs.FileInfo) {
+func LFD(path string) {
 	// infos := strings.Split(fs.FormatFileInfo(info), " ")
 }

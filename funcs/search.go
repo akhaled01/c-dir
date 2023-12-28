@@ -1,7 +1,6 @@
 package funcs
 
 import (
-	"fmt"
 	"io/fs"
 	"os"
 )
