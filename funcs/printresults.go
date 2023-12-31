@@ -14,14 +14,13 @@ func PrintNormal(entry fs.DirEntry) {
 	}
 }
 
-// TODO: fix -a flag
-// TODO: fix the Symbolic link.
 // TODO: try the audit questions.
 func PrintRes(mainfs string) {
 	grouplen := 0
 	stat, err := os.Stat(mainfs)
 	if err != nil {
 		fmt.Println(RedANSI+BoldANSI+"[printresults.go] getting stat,", err)
+		os.Exit(1)
 	}
 
 	if !stat.IsDir() {
@@ -44,7 +43,7 @@ func PrintRes(mainfs string) {
 	}
 	// Sort the mainEntries slice alphabetically
 	Sort(entries)
-	if Timesort && ReverseOrder {
+	if Timesort && ReverseOrder {  
 		sortByReverseTime(entries)
 	} else if Timesort {
 		sortByTime(entries)
