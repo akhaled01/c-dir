@@ -11,8 +11,12 @@ func main() {
 		args = append(args, ".")
 	}
 	mainEntries := funcs.ParseFlags(args)
-
+	
 	for _, v := range mainEntries {
-		funcs.PrintRes(v)
+		// if funcs.LongFormat {
+		// 	funcs.LFD(v)
+		// } else {
+			funcs.PrintRes(v)
+		// }
 	}
 }

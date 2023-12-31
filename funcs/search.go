@@ -3,6 +3,7 @@ package funcs
 import (
 	"io/fs"
 	"os"
+	"fmt"
 )
 
 func SearchDir(dir string) ([]fs.DirEntry, []fs.DirEntry) {
