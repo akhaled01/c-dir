@@ -2,12 +2,12 @@ package funcs
 
 import (
 	"fmt"
-	"io/fs"
+	// "io/fs"
 	"os"
 	"syscall"
 )
 
-func calculateTotal(entries []fs.DirEntry, path string) int64 {
+func calculateTotal(entries []os.FileInfo, path string) int64 {
 	size := int64(0)
 	for i := 0; i < len(entries); i++ {
 		if entries[i].Name()[0] != '.' || DisplayHidden {

@@ -1,11 +1,12 @@
 package funcs
 
 import (
-	"io/fs"
+	// "io/fs"
+	"os"
 	"strings"
 )
 
-func Sort(entries []fs.DirEntry) {
+func Sort(entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
 			if entries[i].Name() > entries[j].Name() {
@@ -15,12 +16,11 @@ func Sort(entries []fs.DirEntry) {
 	}
 }
 
-func sortByReverseTime(entries []fs.DirEntry) {
+func sortByReverseTime(mainfs string, entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
-			info1, _ := entries[i].Info()
-			info2, _ := entries[j].Info()
-
+			info1, _ := os.Stat(mainfs + "/" + entries[i].Name())
+			info2, _ := os.Stat(mainfs + "/" + entries[j].Name())
 			time1 := info1.ModTime()
 			time2 := info2.ModTime()
 
@@ -35,7 +35,7 @@ func sortByReverseTime(entries []fs.DirEntry) {
 	}
 }
 
-func reverseSortAlphabet(entries []fs.DirEntry) {
+func reverseSortAlphabet(entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
 			if entries[i].Name() < entries[j].Name() {
@@ -45,11 +45,11 @@ func reverseSortAlphabet(entries []fs.DirEntry) {
 	}
 }
 
-func sortByTime(entries []fs.DirEntry) {
+func sortByTime(mainfs string, entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
-			info1, _ := entries[i].Info()
-			info2, _ := entries[j].Info()
+			info1, _ := os.Stat(mainfs + "/" + entries[i].Name())
+			info2, _ := os.Stat(mainfs + "/" + entries[j].Name())
 
 			time1 := info1.ModTime()
 			time2 := info2.ModTime()

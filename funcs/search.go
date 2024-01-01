@@ -2,22 +2,40 @@ package funcs
 
 import (
 	"fmt"
-	"io/fs"
+	// "io/fs"
 	"os"
 )
 
-func SearchDir(dir string) ([]fs.DirEntry, []fs.DirEntry) {
+func SearchDir(dir string) ([]os.FileInfo, []os.FileInfo) {
 	entries, err := os.ReadDir(dir)
-	mainEntryArray := []fs.DirEntry{}
+	mainEntryArray := []os.FileInfo{}
 	for _, ent := range entries {
-		if ent.Name()[0] == '.' && !DisplayHidden{
+		if ent.Name()[0] == '.' && !DisplayHidden {
 			continue
 		}
-		mainEntryArray = append(mainEntryArray, ent)
+		info, err := ent.Info()
+		if err != nil {
+			fmt.Println(RedANSI+BoldANSI+"[search.go] error getting info for entry,", err)
+			continue
+		}
+		mainEntryArray = append(mainEntryArray, info)
 	}
-	mainEntries := []fs.DirEntry{}
-	DirEntries := []fs.DirEntry{}
+	mainEntries := []os.FileInfo{}
+	DirEntries := []os.FileInfo{}
+
+	if DisplayHidden {
+		file2, err := os.Stat("..")
+		if err == nil {
+			mainEntries = append(mainEntries, file2)
+		}
+		file1, err := os.Stat(".")
+		if err == nil {
+			mainEntries = append(mainEntries, file1)
+		}
+	}
+
 	mainEntries = append(mainEntries, mainEntryArray...)
+
 	if err != nil {
 		fmt.Println(RedANSI+BoldANSI+"[search.go] error searching directory,", err)
 	}
