@@ -102,14 +102,14 @@ func PrintRes(mainfs string) {
 				break
 			}
 		}
-		fmt.Println(grid)
+		// fmt.Println(grid)
 		count := 0
 		// Print the grid (we display the grid row by row here)
 		for col := 0; col < columns; col++ {
 			// fmt.Printf("Column %d: ", col+1)
 			for row := 0; row < rows; row++ {
 				count++
-				fmt.Printf("%s %s", grid[row][col], strings.Repeat(" ", gr[row]-len(grid[row][col])))
+				fmt.Print(grid[row][col], strings.Repeat(" ", longestEntry-len(grid[row][col])), " ")
 				if count%columns == 0 {
 					fmt.Println()
 				}
