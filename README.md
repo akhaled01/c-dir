@@ -1,6 +1,5 @@
 # searchDir
 
-SearchDir is a replica of the utility command ls
+A Small Replica of the GNU Coreutils ls command built entirely in golang 
 
-
-More info soon..
+No external Dependencies needed
