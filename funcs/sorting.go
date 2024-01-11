@@ -40,7 +40,19 @@ func sortByReverseTime(mainfs string, entries []os.FileInfo) {
 			time2 := info2.ModTime()
 
 			if time1.Equal(time2) {
-				if strings.ToLower(entries[i].Name()) > strings.ToLower(entries[j].Name()) {
+				wordAtI := ""
+				if isHidden(entries[i].Name()) {
+					wordAtI = entries[i].Name()[1:]
+				} else {
+					wordAtI = entries[i].Name()
+				}
+				wordAtJ := ""
+				if isHidden(entries[j].Name()) {
+					wordAtJ = entries[j].Name()[1:]
+				} else {
+					wordAtJ = entries[j].Name()
+				}
+				if strings.ToLower(wordAtI) < strings.ToLower(wordAtJ) {
 					entries[i], entries[j] = entries[j], entries[i]
 				}
 			} else if time1.After(time2) {
@@ -82,7 +94,7 @@ func sortByTime(mainfs string, entries []os.FileInfo) {
 			time2 := info2.ModTime()
 
 			if time1.Equal(time2) {
-				if strings.ToLower(entries[i].Name()) < strings.ToLower(entries[j].Name()) {
+				if strings.ToLower(entries[i].Name()) > strings.ToLower(entries[j].Name()) {
 					entries[i], entries[j] = entries[j], entries[i]
 				}
 			} else if time1.Before(time2) {

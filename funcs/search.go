@@ -41,7 +41,7 @@ func SearchDir(dir string) ([]os.FileInfo, []os.FileInfo) {
 		fmt.Println(RedANSI+BoldANSI+"[search.go] error searching directory,", err)
 	}
 	for _, v := range mainEntries {
-		if v.IsDir() {
+		if v.IsDir() && v.Name() != "." && v.Name() != ".." {
 			DirEntries = append(DirEntries, v)
 		}
 	}

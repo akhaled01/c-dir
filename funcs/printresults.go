@@ -7,13 +7,12 @@ import (
 
 func PrintNormal(entry os.FileInfo) {
 	if entry.IsDir() {
-		fmt.Println(BlueANSI + BoldANSI + entry.Name() + ResetANSI + " ")
+		fmt.Println(BlueANSI + BoldANSI + entry.Name() + ResetANSI)
 	} else {
 		fmt.Println(entry.Name() + " ")
 	}
 }
 
-// TODO: try the audit questions.
 func PrintRes(mainfs string) {
 	width, _ := getTerminalWidth()
 	if width == 0 {
@@ -40,7 +39,7 @@ func PrintRes(mainfs string) {
 	entries, dirs := SearchDir(mainfs)
 	if LongFormat {
 		total := calculateTotal(entries, mainfs)
-		fmt.Println("Total", total)
+		fmt.Println("total", total)
 	}
 	Sort(entries)
 	if Timesort && ReverseOrder {
@@ -65,7 +64,7 @@ func PrintRes(mainfs string) {
 	}
 	if RecursiveSearch {
 		for _, subFS := range dirs {
-			fmt.Println(GreenANSI + BoldANSI + mainfs + "/" + subFS.Name() + ResetANSI)
+			fmt.Println(mainfs + "/" + subFS.Name())
 			PrintRes(mainfs + "/" + subFS.Name())
 		}
 	}

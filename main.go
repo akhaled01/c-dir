@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"searchDir/funcs"
@@ -18,7 +19,9 @@ func main() {
 		if funcs.IsSingleFlag(v) || funcs.IsMultiFlag(v) {
 			continue
 		} else {
-
+			if funcs.RecursiveSearch {
+				fmt.Println(v)
+			}
 			funcs.PrintRes(v)
 		}
 	}
