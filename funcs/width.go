@@ -30,16 +30,16 @@ func LongestEntry(entries []os.FileInfo) int {
 	return longestEntry
 }
 
-func isZero(entries []os.FileInfo, width int) bool {
-	totalNames := ""
-	for _, entry := range entries {
-		totalNames+= entry.Name()
-		// if len(entry.Name()) > longestEntry {
-		// 	longestEntry = len(entry.Name())
-		// }
-	}
-	if len(totalNames)-width < 0 {
-		return false
-	}
-	return true
-}
+// func isZero(entries []os.FileInfo, width int) bool {
+// 	totalNames := ""
+// 	for _, entry := range entries {
+// 		totalNames+= entry.Name()
+// 		// if len(entry.Name()) > longestEntry {
+// 		// 	longestEntry = len(entry.Name())
+// 		// }
+// 	}
+// 	if len(totalNames)-width < 0 {
+// 		return false
+// 	}
+// 	return true
+// }

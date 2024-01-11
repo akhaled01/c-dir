@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"strconv"
+	"strings"
 	"syscall"
 )
 
@@ -15,6 +16,7 @@ func lookupUserById(uid uint32) (string, error) {
 	}
 	return u.Username, nil
 }
+
 func lookupGroupById(gid uint32) (string, error) {
 	g, err := user.LookupGroupId(strconv.Itoa(int(gid)))
 	if err != nil {
@@ -44,4 +46,47 @@ func GetFileOwnerAndGroup(filePath string) (string, string, error) {
 		return "", "", err
 	}
 	return owner, group, nil
+}
+
+func SortFilesFlags(filesFlags []string) []string {
+	var files []string
+	var folders []string
+	var flags []string
+
+	for _, item := range filesFlags {
+		if isFile(item) {
+			files = append(files, item)
+		} else if isFolder(item) {
+			folders = append(folders, item)
+		} else if isFlag(item) {
+			flags = append(flags, item)
+		}
+	}
+
+	var sorted []string
+	sorted = append(sorted, files...)
+	sorted = append(sorted, folders...)
+	sorted = append(sorted, flags...)
+
+	return sorted
+}
+
+func isFile(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return !info.IsDir()
+}
+
+func isFolder(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return info.IsDir()
+}
+
+func isFlag(name string) bool {
+	return strings.HasPrefix(name, "-")
 }

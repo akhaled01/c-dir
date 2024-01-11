@@ -1,15 +1,30 @@
 package funcs
 
 import (
-	// "io/fs"
 	"os"
 	"strings"
 )
 
+func isHidden(name string) bool {
+	return strings.HasPrefix(name, ".") && name != "." && name != ".."
+}
+
 func Sort(entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
-			if entries[i].Name() > entries[j].Name() {
+			wordAtI := ""
+			if isHidden(entries[i].Name()) {
+				wordAtI = entries[i].Name()[1:]
+			} else {
+				wordAtI = entries[i].Name()
+			}
+			wordAtJ := ""
+			if isHidden(entries[j].Name()) {
+				wordAtJ = entries[j].Name()[1:]
+			} else {
+				wordAtJ = entries[j].Name()
+			}
+			if strings.ToLower(wordAtI) > strings.ToLower(wordAtJ) {
 				entries[i], entries[j] = entries[j], entries[i]
 			}
 		}
@@ -38,7 +53,19 @@ func sortByReverseTime(mainfs string, entries []os.FileInfo) {
 func reverseSortAlphabet(entries []os.FileInfo) {
 	for i := 0; i < len(entries)-1; i++ {
 		for j := i + 1; j < len(entries); j++ {
-			if entries[i].Name() < entries[j].Name() {
+			wordAtI := ""
+			if isHidden(entries[i].Name()) {
+				wordAtI = entries[i].Name()[1:]
+			} else {
+				wordAtI = entries[i].Name()
+			}
+			wordAtJ := ""
+			if isHidden(entries[j].Name()) {
+				wordAtJ = entries[j].Name()[1:]
+			} else {
+				wordAtJ = entries[j].Name()
+			}
+			if strings.ToLower(wordAtI) < strings.ToLower(wordAtJ) {
 				entries[i], entries[j] = entries[j], entries[i]
 			}
 		}

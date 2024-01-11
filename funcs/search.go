@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+
 func SearchDir(dir string) ([]os.FileInfo, []os.FileInfo) {
 	entries, err := os.ReadDir(dir)
 	mainEntryArray := []os.FileInfo{}

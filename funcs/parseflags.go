@@ -1,22 +1,8 @@
 package funcs
 
 import (
-	"fmt"
 	"os"
 )
-
-func removeElementAtIndex(arr []string, index int) []string {
-	// Check if the index is valid
-	if index < 0 || index >= len(arr) {
-		fmt.Println("Index out of range")
-		return arr
-	}
-
-	// Remove the element at the specified index
-	arr = append(arr[:index], arr[index+1:]...)
-
-	return arr
-}
 
 func IsSingleFlag(s string) bool {
 	_, err := os.Stat(s)
@@ -26,14 +12,14 @@ func IsSingleFlag(s string) bool {
 func IsMultiFlag(s string) bool {
 	_, err := os.Stat(s)
 	if err != nil && !os.IsNotExist(err) {
-		fmt.Println(err)
+		RedPrintln(err)
 		return false
 	}
 	return true && os.IsNotExist(err) && s[0] == '-'
 }
 
 func ParseFlags(args []string) []string {
-	for i, argument := range args {
+	for _, argument := range args {
 		if IsSingleFlag(argument) {
 			FlagCounter++
 			switch argument {
@@ -52,7 +38,6 @@ func ParseFlags(args []string) []string {
 			default:
 				continue
 			}
-			args = removeElementAtIndex(args, i)
 		} else if IsMultiFlag(argument) {
 			FlagCounter++
 			runeArray := []rune(argument)
@@ -74,10 +59,9 @@ func ParseFlags(args []string) []string {
 					continue
 				}
 			}
-			args = removeElementAtIndex(args, i)
 		}
 	}
-	if len(args) == 0 {
+	if FlagCounter == len(args) {
 		args = append(args, ".")
 	}
 	return args
