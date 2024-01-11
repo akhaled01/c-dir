@@ -5,6 +5,9 @@ import (
 	"searchDir/funcs"
 )
 
+//TODO: Work on block count
+//TODO: Ensure correct alphabetical order
+
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
