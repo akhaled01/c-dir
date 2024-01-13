@@ -4,9 +4,9 @@ import (
 	"fmt"
 	// "io/fs"
 	"os"
+	"strconv"
 	"strings"
 	"syscall"
-	"strconv"
 )
 
 func LFD(path string, grouplen, susInfolen int) {
@@ -23,7 +23,6 @@ func LFD(path string, grouplen, susInfolen int) {
 	if permissions[0] == 'D' {
 		permissions = permissions[1:]
 	}
-
 
 	if permissions[0] == 'L' {
 		permissions = "l" + permissions[1:]
@@ -42,7 +41,7 @@ func LFD(path string, grouplen, susInfolen int) {
 	}
 	numLinks := sysInfo.Nlink
 	// fix the spacing in the long format display
-	numLinkss:= strconv.Itoa(int(numLinks))
+	numLinkss := strconv.Itoa(int(numLinks))
 	if susInfolen != 0 {
 		numLinkss = strings.Repeat(" ", susInfolen-len(numLinkss))
 	} else {
@@ -67,8 +66,18 @@ func LFD(path string, grouplen, susInfolen int) {
 		group = group + strings.Repeat(" ", grouplen-len(group))
 	}
 
-	// File size
-	size := info.Size()
+	// getting the thing for the dev -l.
+	var MajorNumb uint64
+	var MinorNumb uint64
+	sprigStr := ""
+	if info.Mode()&os.ModeDevice != 0 {
+		MajorNumb = info.Sys().(*syscall.Stat_t).Dev >> 8
+		MinorNumb = info.Sys().(*syscall.Stat_t).Dev & 0xff
+		// fmt.Println(MajorNumb, MinorNumb)
+		sprigStr += strconv.FormatInt(int64(MajorNumb), 10) + ", " + strconv.FormatInt(int64(MinorNumb), 10)
+	} else {
+		sprigStr += strconv.FormatInt(info.Size(), 10)
+	}
 
 	// Last modified time
 	modTime := info.ModTime().Format("Jan _2 15:04")
@@ -100,7 +109,7 @@ func LFD(path string, grouplen, susInfolen int) {
 	if isSymLink {
 		fileName += " -> " + symlinkdest
 	}
-	fmt.Printf("%s%s %1d %s %s %4d %s %s\n", permissions,numLinkss, numLinks, owner, group, size, modTime, fileName)
+	fmt.Printf("%s%s %1d %s %s %s %s %s\n", permissions, numLinkss, numLinks, owner, group, sprigStr, modTime, fileName)
 }
 
 // find the maximum group length so we can fix the spacing in the long format display
@@ -146,7 +155,7 @@ func MaxSusInfoLength(mainfs string, entries []os.FileInfo) int {
 			return 0
 		}
 		numLinks := sysInfo.Nlink
-		numLinkss:= strconv.Itoa(int(numLinks))
+		numLinkss := strconv.Itoa(int(numLinks))
 		if len(numLinkss) > max {
 			max = len(numLinkss)
 		}
@@ -171,4 +180,20 @@ func IsSymlink(filename string) (bool, string, error) {
 
 	// Not a symlink
 	return false, "", nil
+}
+
+func Major(dev uint64) uint32 {
+	major := uint32((dev & 0x00000000000fff00) >> 8)
+
+	major |= uint32((dev & 0xfffff00000000000) >> 32)
+
+	return major
+}
+
+func Minor(dev uint64) uint32 {
+	minor := uint32((dev & 0x00000000000000ff) >> 0)
+
+	minor |= uint32((dev & 0x00000ffffff00000) >> 12)
+
+	return minor
 }
