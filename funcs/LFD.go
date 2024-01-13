@@ -67,12 +67,12 @@ func LFD(path string, grouplen, susInfolen int) {
 	}
 
 	// getting the thing for the dev -l.
-	var MajorNumb uint64
-	var MinorNumb uint64
+	var MajorNumb uint32
+	var MinorNumb uint32
 	sprigStr := ""
 	if info.Mode()&os.ModeDevice != 0 {
-		MajorNumb = info.Sys().(*syscall.Stat_t).Dev >> 8
-		MinorNumb = info.Sys().(*syscall.Stat_t).Dev & 0xff
+		MajorNumb = Major(info.Sys().(*syscall.Stat_t).Rdev)
+		MinorNumb = Minor(info.Sys().(*syscall.Stat_t).Rdev)
 		// fmt.Println(MajorNumb, MinorNumb)
 		sprigStr += strconv.FormatInt(int64(MajorNumb), 10) + ", " + strconv.FormatInt(int64(MinorNumb), 10)
 	} else {
