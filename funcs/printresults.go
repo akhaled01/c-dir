@@ -34,9 +34,13 @@ func PrintRes(mainfs string) {
 			}
 			LFD(mainfs, grouplen, susInfolen)
 		}
+		fmt.Println()
 		return
 	}
 	entries, dirs := SearchDir(mainfs)
+	if NotFlags >= 2 && FileNum >= 1 {
+		fmt.Println(mainfs)
+	}
 	if LongFormat {
 		total := calculateTotal(entries, mainfs)
 		fmt.Println("total", total)
