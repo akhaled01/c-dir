@@ -1,4 +1,4 @@
-# searchDir (my-ls-1)
+# c-dir
 
 A Small Replica of the GNU Coreutils `ls` command built purely in golang. This project is part of reboot01's projects.
 
